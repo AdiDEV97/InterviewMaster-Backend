@@ -10,7 +10,7 @@ public class PreparationDto {
 
     private int id;
 
-    @NotEmpty(message = "Question field should be not be empty!!")
+    @NotEmpty(message = "Question field should not be empty!!")
     private String question;
 
     @NotEmpty(message = "Answer field should not be empty!!")
@@ -19,6 +19,5 @@ public class PreparationDto {
     @NotEmpty(message = "Category field should not be empty!!")
     private String category;
 
-
-    private boolean isCorrent = false;
+    private boolean correct;
 }
