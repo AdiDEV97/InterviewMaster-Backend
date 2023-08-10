@@ -46,9 +46,9 @@ public class PreparationController {
 
 
     // Add new question
-    @PostMapping("/add-question")
-    public ResponseEntity<PreparationDto> addNewQuestion(@Valid @RequestBody PreparationDto preparationDto) {
-        PreparationDto newQuestion = this.prepServ.addNewQuestion(preparationDto);
+    @PostMapping("/add-question/categoryId-{categoryId}")
+    public ResponseEntity<PreparationDto> addNewQuestion(@Valid @RequestBody PreparationDto preparationDto, @PathVariable("categoryId") int categoryId) {
+        PreparationDto newQuestion = this.prepServ.addNewQuestion(preparationDto, categoryId);
         return ResponseEntity.of(Optional.of(newQuestion));
     }
 
@@ -66,5 +66,14 @@ public class PreparationController {
     public ResponseEntity<ApiResponse> deleteQuestion(@Valid @PathVariable("id") int id) {
         this.prepServ.deleteQuestion(id);
         return new ResponseEntity<>(new ApiResponse(String.format("The product with id - %s is deleted successfully!!", id), true), HttpStatus.OK);
+    }
+
+    @GetMapping("/byCategory/id-{categoryId}")
+    public ResponseEntity<List<PreparationDto>> getQuestionsByCategory(@Valid @PathVariable("categoryId") int categoryId) {
+        List<PreparationDto> questionsByCategory = this.prepServ.getAllQuestionsByCategory(categoryId);
+        if(questionsByCategory.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        }
+        return ResponseEntity.of(Optional.of(questionsByCategory));
     }
 }

@@ -1,7 +1,9 @@
 package com.interviewmaster.Service.Impl;
 
+import com.interviewmaster.Dao.CategoryRepository;
 import com.interviewmaster.Dao.PreparationRepo;
 import com.interviewmaster.Exceptions.ResourceNotFoundException;
+import com.interviewmaster.Model.Category;
 import com.interviewmaster.Model.Preparation;
 import com.interviewmaster.Payload.PreparationDto;
 import com.interviewmaster.Service.PreparationService;
@@ -17,6 +19,9 @@ public class PreparationServiceImpl implements PreparationService {
 
     @Autowired
     private PreparationRepo prepRepo;
+
+    @Autowired
+    private CategoryRepository catRepo;
 
     @Autowired
     private ModelMapper modelMapper;
@@ -35,9 +40,11 @@ public class PreparationServiceImpl implements PreparationService {
     }
 
     @Override
-    public PreparationDto addNewQuestion(PreparationDto preparationDto) {
+    public PreparationDto addNewQuestion(PreparationDto preparationDto, int categoryId) {
+        Category category = this.catRepo.findById(categoryId).orElseThrow(() -> new ResourceNotFoundException("Category", "categoryId", categoryId));
         Preparation question = this.modelMapper.map(preparationDto, Preparation.class);
         question.setCorrect(false);
+        question.setCategory(category);
         Preparation saveQuestion = this.prepRepo.save(question);
         return this.modelMapper.map(saveQuestion, PreparationDto.class);
     }
@@ -58,4 +65,17 @@ public class PreparationServiceImpl implements PreparationService {
         Preparation question = this.prepRepo.findById(id).orElseThrow(() -> new ResourceNotFoundException("Preparation", "id", id));
         this.prepRepo.delete(question);
     }
+
+    @Override
+    public List<PreparationDto> getAllQuestionsByCategory(int categoryId) {
+        Category category = this.catRepo.findById(categoryId).orElseThrow(() -> new ResourceNotFoundException("Category", "categoryId", categoryId));
+
+        List<Preparation> getAllQuestionsByCategory = this.prepRepo.findByCategory(category);
+
+        List<PreparationDto> questionsByCategoryDto = getAllQuestionsByCategory.stream().map(question -> this.modelMapper.map(question, PreparationDto.class)).collect(Collectors.toList());
+
+        return questionsByCategoryDto;
+    }
+
+
 }

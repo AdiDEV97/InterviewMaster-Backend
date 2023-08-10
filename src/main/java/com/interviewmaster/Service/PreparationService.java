@@ -1,5 +1,6 @@
 package com.interviewmaster.Service;
 
+import com.interviewmaster.Model.Category;
 import com.interviewmaster.Model.Preparation;
 import com.interviewmaster.Payload.PreparationDto;
 
@@ -14,11 +15,14 @@ public interface PreparationService {
     PreparationDto getQuestionById(int id);
 
     // Add new Question
-    PreparationDto addNewQuestion(PreparationDto preparationDto);
+    PreparationDto addNewQuestion(PreparationDto preparationDto, int categoryId);
 
     // Update Question
     PreparationDto updateQuestion(int id, PreparationDto preparationDto);
 
     // Delete Question
     void deleteQuestion(int id);
+
+    // Get All Preparation Questions by Category
+    List<PreparationDto> getAllQuestionsByCategory(int categoryId);
 }

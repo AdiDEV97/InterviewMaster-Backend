@@ -1,5 +1,6 @@
 package com.interviewmaster.Payload;
 
+import com.interviewmaster.Model.Category;
 import lombok.Data;
 
 import javax.validation.constraints.NotEmpty;
@@ -18,6 +19,5 @@ public class PreparationDto {
 
     private boolean correct;
 
-    @NotEmpty(message = "Category field should not be empty!!")
-    private String category;
+    private Category category;
 }
