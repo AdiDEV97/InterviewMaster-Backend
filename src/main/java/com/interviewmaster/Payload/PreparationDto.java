@@ -16,8 +16,8 @@ public class PreparationDto {
     @NotEmpty(message = "Answer field should not be empty!!")
     private String answer;
 
+    private boolean correct;
+
     @NotEmpty(message = "Category field should not be empty!!")
     private String category;
-
-    private boolean correct;
 }

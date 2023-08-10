@@ -22,9 +22,10 @@ public class Preparation {
     @Size(min = 3, max = 1000000000, message = "Write atleast 3 characters!!")
     private String answer;
 
-    @Column(name = "category")
-    private String category;
-
     @Column(name = "isCorrect")
     private boolean correct;
+
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private Category category;
 }

@@ -47,7 +47,6 @@ public class PreparationServiceImpl implements PreparationService {
         Preparation questionToUpdate = this.prepRepo.findById(id).orElseThrow(() -> new ResourceNotFoundException("Preparation", "id", id));
         questionToUpdate.setQuestion(preparationDto.getQuestion());
         questionToUpdate.setAnswer(preparationDto.getAnswer());
-        questionToUpdate.setCategory(preparationDto.getCategory());
         System.out.println("IsCorrect - " + preparationDto.isCorrect());
         questionToUpdate.setCorrect(preparationDto.isCorrect());
         this.prepRepo.save(questionToUpdate);
