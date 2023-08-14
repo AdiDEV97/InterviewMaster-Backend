@@ -25,4 +25,7 @@ public interface PreparationService {
 
     // Get All Preparation Questions by Category
     List<PreparationDto> getAllQuestionsByCategory(int categoryId);
+
+    // Get Random Preparation Question
+    PreparationDto getRandomQuestionById();
 }

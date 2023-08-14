@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 @Service
@@ -77,5 +78,12 @@ public class PreparationServiceImpl implements PreparationService {
         return questionsByCategoryDto;
     }
 
-
+    @Override
+    public PreparationDto getRandomQuestionById() {
+        Random random = new Random();
+        long allDataSize = this.prepRepo.count();
+        int randomId = random.nextInt((int)allDataSize) + 1;
+        Preparation questionById = this.prepRepo.findById(randomId).orElseThrow(() -> new ResourceNotFoundException("Preparation", "id", randomId));
+        return this.modelMapper.map(questionById, PreparationDto.class);
+    }
 }

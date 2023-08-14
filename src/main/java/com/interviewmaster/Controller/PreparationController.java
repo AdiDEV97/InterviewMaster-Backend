@@ -76,4 +76,10 @@ public class PreparationController {
         }
         return ResponseEntity.of(Optional.of(questionsByCategory));
     }
+
+    @GetMapping("/get-question")
+    public ResponseEntity<PreparationDto> getQuestionByRandomId() {
+        PreparationDto question = this.prepServ.getRandomQuestionById();
+        return ResponseEntity.of(Optional.of(question));
+    }
 }
