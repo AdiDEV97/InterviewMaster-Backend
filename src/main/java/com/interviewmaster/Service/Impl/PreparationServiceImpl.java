@@ -36,7 +36,7 @@ public class PreparationServiceImpl implements PreparationService {
 
     @Override
     public PreparationDto getQuestionById(int id) {
-        Preparation question = this.prepRepo.findById(id).orElseThrow(() -> new ResourceNotFoundException("Preparation", "id", id));
+        Preparation question = this.prepRepo.findById(id).orElseThrow(() -> new ResourceNotFoundException("Question", "id", id));
         return this.modelMapper.map(question, PreparationDto.class);
     }
 
@@ -52,7 +52,7 @@ public class PreparationServiceImpl implements PreparationService {
 
     @Override
     public PreparationDto updateQuestion(int id, PreparationDto preparationDto) {
-        Preparation questionToUpdate = this.prepRepo.findById(id).orElseThrow(() -> new ResourceNotFoundException("Preparation", "id", id));
+        Preparation questionToUpdate = this.prepRepo.findById(id).orElseThrow(() -> new ResourceNotFoundException("Question", "id", id));
         questionToUpdate.setQuestion(preparationDto.getQuestion());
         questionToUpdate.setAnswer(preparationDto.getAnswer());
         System.out.println("IsCorrect - " + preparationDto.isCorrect());
@@ -63,7 +63,7 @@ public class PreparationServiceImpl implements PreparationService {
 
     @Override
     public void deleteQuestion(int id) {
-        Preparation question = this.prepRepo.findById(id).orElseThrow(() -> new ResourceNotFoundException("Preparation", "id", id));
+        Preparation question = this.prepRepo.findById(id).orElseThrow(() -> new ResourceNotFoundException("Question", "id", id));
         this.prepRepo.delete(question);
     }
 
@@ -83,7 +83,7 @@ public class PreparationServiceImpl implements PreparationService {
         Random random = new Random();
         long allDataSize = this.prepRepo.count();
         int randomId = random.nextInt((int)allDataSize) + 1;
-        Preparation questionById = this.prepRepo.findById(randomId).orElseThrow(() -> new ResourceNotFoundException("Preparation", "id", randomId));
+        Preparation questionById = this.prepRepo.findById(randomId).orElseThrow(() -> new ResourceNotFoundException("Question", "id", randomId));
         return this.modelMapper.map(questionById, PreparationDto.class);
     }
 }
