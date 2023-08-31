@@ -86,4 +86,13 @@ public class PreparationServiceImpl implements PreparationService {
         Preparation questionById = this.prepRepo.findById(randomId).orElseThrow(() -> new ResourceNotFoundException("Question", "id", randomId));
         return this.modelMapper.map(questionById, PreparationDto.class);
     }
+
+    @Override
+    public List<PreparationDto> searchPreparationByQuestion(String keyword) {
+        List<Preparation> questions = this.prepRepo.searchByQuestion("%"+keyword+"%");
+        List<PreparationDto> questionsDto = questions.stream().map(question -> this.modelMapper.map(question, PreparationDto.class)).collect(Collectors.toList());
+        return questionsDto;
+    }
+
+
 }

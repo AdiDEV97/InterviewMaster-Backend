@@ -83,4 +83,15 @@ public class PreparationController {
         PreparationDto question = this.prepServ.getRandomQuestionById();
         return ResponseEntity.of(Optional.of(question));
     }
+
+    @GetMapping("/search/{keyword}")
+    public ResponseEntity<List<PreparationDto>> getQuestionsBySearching(@PathVariable("keyword") String keyword) {
+        List<PreparationDto> ques = this.prepServ.searchPreparationByQuestion(keyword);
+        if(ques.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        }
+        else {
+            return ResponseEntity.of(Optional.of(ques));
+        }
+    }
 }

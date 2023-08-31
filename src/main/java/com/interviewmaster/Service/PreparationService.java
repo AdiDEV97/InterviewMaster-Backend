@@ -28,4 +28,7 @@ public interface PreparationService {
 
     // Get Random Preparation Question
     PreparationDto getRandomQuestionById();
+
+    // Searching Question
+    List<PreparationDto> searchPreparationByQuestion(String keyword);
 }
