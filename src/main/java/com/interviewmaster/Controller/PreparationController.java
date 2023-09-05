@@ -33,7 +33,7 @@ public class PreparationController {
         }
     }
 
-    // Get Question by Id
+    // Get Question by id
     @GetMapping("/question/id-{id}")
     public ResponseEntity<PreparationDto> getQuestionById(@Valid @PathVariable("id") int id) {
         PreparationDto question = this.prepServ.getQuestionById(id);
@@ -87,8 +87,9 @@ public class PreparationController {
     @GetMapping("/search/verdict={keyword}")
     public ResponseEntity<List<PreparationDto>> getQuestionsBySearching(@PathVariable("keyword") String keyword) {
         List<PreparationDto> ques = this.prepServ.searchPreparationByQuestion(keyword);
+        //System.out.println("Data - "+ ques);
         if(ques.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+            return new ResponseEntity(new ApiResponse(String.format("Questions with word - %s are not found", keyword), false), HttpStatus.NOT_FOUND);
         }
         else {
             return ResponseEntity.of(Optional.of(ques));
