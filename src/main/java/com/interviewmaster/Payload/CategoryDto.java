@@ -3,6 +3,7 @@ package com.interviewmaster.Payload;
 import com.interviewmaster.Model.Preparation;
 import lombok.Data;
 
+import javax.persistence.Column;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 import java.util.List;
@@ -17,7 +18,8 @@ public class CategoryDto {
     private String categoryTitle;
 
     @NotEmpty(message = "Please specify the category description!!")
-    @Size(min=5, max=500, message = "Description should be between 5 to 500 characters!!")
+    @Size(min=3 , max=1000, message = "Description should be between 5 to 1000 characters!!")
+
     private String categoryDescription;
 
     //private List<Preparation> preparation;
