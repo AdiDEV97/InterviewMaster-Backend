@@ -90,6 +90,7 @@ public class PreparationServiceImpl implements PreparationService {
     @Override
     public List<PreparationDto> searchPreparationByQuestion(String keyword) {
         List<Preparation> questions = this.prepRepo.searchByQuestion("%"+keyword+"%");
+        //List<Preparation> questions = this.prepRepo.findPreparationByQuestionLike(keyword);
         List<PreparationDto> questionsDto = questions.stream().map(question -> this.modelMapper.map(question, PreparationDto.class)).collect(Collectors.toList());
         return questionsDto;
     }

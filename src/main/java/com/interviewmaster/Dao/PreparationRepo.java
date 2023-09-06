@@ -13,4 +13,7 @@ public interface PreparationRepo extends JpaRepository<Preparation, Integer> {
 
     @Query("select prep from Preparation prep where prep.question like :key")
     List<Preparation> searchByQuestion(@Param("key") String keyword);
+
+    /*@Query("select prep from Preparation prep where prep.question like %?1%")
+    List<Preparation> findPreparationByQuestionLike(@Param("key") String keyword);*/
 }

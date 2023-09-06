@@ -89,7 +89,7 @@ public class PreparationController {
         List<PreparationDto> ques = this.prepServ.searchPreparationByQuestion(keyword);
         //System.out.println("Data - "+ ques);
         if(ques.isEmpty()) {
-            return new ResponseEntity(new ApiResponse(String.format("Questions with word - %s are not found", keyword), false), HttpStatus.NOT_FOUND);
+            return new ResponseEntity(new ApiResponse("No question found!!", false), HttpStatus.NOT_FOUND);
         }
         else {
             return ResponseEntity.of(Optional.of(ques));
