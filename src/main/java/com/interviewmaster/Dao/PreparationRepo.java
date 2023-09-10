@@ -2,6 +2,7 @@ package com.interviewmaster.Dao;
 
 import com.interviewmaster.Model.Category;
 import com.interviewmaster.Model.Preparation;
+import org.hibernate.type.IntegerType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -16,4 +17,7 @@ public interface PreparationRepo extends JpaRepository<Preparation, Integer> {
 
     /*@Query("select prep from Preparation prep where prep.question like %?1%")
     List<Preparation> findPreparationByQuestionLike(@Param("key") String keyword);*/
+
+    @Query("SELECT p FROM Preparation p WHERE p.category in (:categories)")
+    List<Preparation> findByCategories(@Param("categories")List<Category> categories);
 }

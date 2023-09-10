@@ -1,5 +1,6 @@
 package com.interviewmaster.Controller;
 
+import com.interviewmaster.Model.Category;
 import com.interviewmaster.Model.Preparation;
 import com.interviewmaster.Payload.ApiResponse;
 import com.interviewmaster.Payload.PreparationDto;
@@ -93,6 +94,17 @@ public class PreparationController {
         }
         else {
             return ResponseEntity.of(Optional.of(ques));
+        }
+    }
+
+    @GetMapping("/questions-by-selected-topics/categories-{categories}")
+    public ResponseEntity<List<PreparationDto>> getAllQuestionsByCategoryList(@PathVariable("categories") List<Category> categoryList) {
+        List<PreparationDto> questions = this.prepServ.getQuestionsByMultipleCategories(categoryList);
+        if(questions.isEmpty()) {
+            return new ResponseEntity(new ApiResponse("No questions found!!", false), HttpStatus.NOT_FOUND);
+        }
+        else {
+            return ResponseEntity.of(Optional.of(questions));
         }
     }
 }

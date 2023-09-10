@@ -5,6 +5,7 @@ import com.interviewmaster.Dao.PreparationRepo;
 import com.interviewmaster.Exceptions.ResourceNotFoundException;
 import com.interviewmaster.Model.Category;
 import com.interviewmaster.Model.Preparation;
+import com.interviewmaster.Payload.CategoryDto;
 import com.interviewmaster.Payload.PreparationDto;
 import com.interviewmaster.Service.PreparationService;
 import org.modelmapper.ModelMapper;
@@ -93,6 +94,13 @@ public class PreparationServiceImpl implements PreparationService {
         //List<Preparation> questions = this.prepRepo.findPreparationByQuestionLike(keyword);
         List<PreparationDto> questionsDto = questions.stream().map(question -> this.modelMapper.map(question, PreparationDto.class)).collect(Collectors.toList());
         return questionsDto;
+    }
+
+    @Override
+    public List<PreparationDto> getQuestionsByMultipleCategories(List<Category> categories) {
+        List<Preparation> allQuestionsByCategories = this.prepRepo.findByCategories(categories);
+        List<PreparationDto> allQuestions = allQuestionsByCategories.stream().map((ques) -> this.modelMapper.map(ques, PreparationDto.class)).collect(Collectors.toList());
+        return allQuestions;
     }
 
 

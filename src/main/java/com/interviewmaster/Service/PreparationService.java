@@ -2,6 +2,7 @@ package com.interviewmaster.Service;
 
 import com.interviewmaster.Model.Category;
 import com.interviewmaster.Model.Preparation;
+import com.interviewmaster.Payload.CategoryDto;
 import com.interviewmaster.Payload.PreparationDto;
 
 import java.util.List;
@@ -31,4 +32,6 @@ public interface PreparationService {
 
     // Searching Question
     List<PreparationDto> searchPreparationByQuestion(String keyword);
+
+    List<PreparationDto> getQuestionsByMultipleCategories(List<Category> categories);
 }
