@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/api/v1/prep")
@@ -98,7 +99,7 @@ public class PreparationController {
     }
 
     @GetMapping("/questions-by-selected-topics/categories-{categories}")
-    public ResponseEntity<List<PreparationDto>> getAllQuestionsByCategoryList(@PathVariable("categories") List<Category> categoryList) {
+    public ResponseEntity<List<PreparationDto>> getAllQuestionsByCategoryList(@PathVariable("categories") Set<Category> categoryList) {
         List<PreparationDto> questions = this.prepServ.getQuestionsByMultipleCategories(categoryList);
         if(questions.isEmpty()) {
             return new ResponseEntity(new ApiResponse("No questions found!!", false), HttpStatus.NOT_FOUND);

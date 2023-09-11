@@ -6,6 +6,7 @@ import com.interviewmaster.Payload.CategoryDto;
 import com.interviewmaster.Payload.PreparationDto;
 
 import java.util.List;
+import java.util.Set;
 
 public interface PreparationService {
 
@@ -33,5 +34,5 @@ public interface PreparationService {
     // Searching Question
     List<PreparationDto> searchPreparationByQuestion(String keyword);
 
-    List<PreparationDto> getQuestionsByMultipleCategories(List<Category> categories);
+    List<PreparationDto> getQuestionsByMultipleCategories(Set<Category> categories);
 }

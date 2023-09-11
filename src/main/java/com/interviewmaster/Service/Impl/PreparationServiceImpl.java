@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -97,7 +98,7 @@ public class PreparationServiceImpl implements PreparationService {
     }
 
     @Override
-    public List<PreparationDto> getQuestionsByMultipleCategories(List<Category> categories) {
+    public List<PreparationDto> getQuestionsByMultipleCategories(Set<Category> categories) {
         List<Preparation> allQuestionsByCategories = this.prepRepo.findByCategories(categories);
         List<PreparationDto> allQuestions = allQuestionsByCategories.stream().map((ques) -> this.modelMapper.map(ques, PreparationDto.class)).collect(Collectors.toList());
         return allQuestions;
