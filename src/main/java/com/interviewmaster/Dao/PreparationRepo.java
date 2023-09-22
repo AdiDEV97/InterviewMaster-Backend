@@ -20,5 +20,5 @@ public interface PreparationRepo extends JpaRepository<Preparation, Integer> {
     List<Preparation> findPreparationByQuestionLike(@Param("key") String keyword);*/
 
     @Query("SELECT p FROM Preparation p WHERE p.category in (:categories)")
-    List<Preparation> findByCategories(@Param("categories") Set<Category> categories);
+    List<Preparation> findByCategories(@Param("categories") List<Category> categories);
 }

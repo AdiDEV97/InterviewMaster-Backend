@@ -6,12 +6,14 @@ import com.interviewmaster.Exceptions.ResourceNotFoundException;
 import com.interviewmaster.Model.Category;
 import com.interviewmaster.Model.Preparation;
 import com.interviewmaster.Payload.CategoryDto;
+import com.interviewmaster.Payload.InterviewRequisiteDto;
 import com.interviewmaster.Payload.PreparationDto;
 import com.interviewmaster.Service.PreparationService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
@@ -97,9 +99,25 @@ public class PreparationServiceImpl implements PreparationService {
         return questionsDto;
     }
 
+//    @Override
+//    public List<PreparationDto> getQuestionsByMultipleCategories(Set<Category> categories) {
+//        List<Preparation> allQuestionsByCategories = this.prepRepo.findByCategories(categories);
+//        List<PreparationDto> allQuestions = allQuestionsByCategories.stream().map((ques) -> this.modelMapper.map(ques, PreparationDto.class)).collect(Collectors.toList());
+//        return allQuestions;
+//    }
+
     @Override
-    public List<PreparationDto> getQuestionsByMultipleCategories(Set<Category> categories) {
-        List<Preparation> allQuestionsByCategories = this.prepRepo.findByCategories(categories);
+    public List<PreparationDto> getQuestionsByMultipleCategories(InterviewRequisiteDto requisiteDto) {
+        System.out.println("Selected Topics - " + requisiteDto.getSelectedTopics());
+        System.out.println("Get total questions by user - " + requisiteDto.getQuestionCount());
+        System.out.println("Get Time for each question - " + requisiteDto.getTime());
+        List<Category> selectedTopics = new ArrayList<>();
+        for(int i : requisiteDto.getSelectedTopics()) {
+            Category cat = this.catRepo.findById(i).orElseThrow(() -> new ResourceNotFoundException("Category", "id", i));
+            selectedTopics.add(cat);
+        }
+
+        List<Preparation> allQuestionsByCategories = this.prepRepo.findByCategories(selectedTopics);
         List<PreparationDto> allQuestions = allQuestionsByCategories.stream().map((ques) -> this.modelMapper.map(ques, PreparationDto.class)).collect(Collectors.toList());
         return allQuestions;
     }

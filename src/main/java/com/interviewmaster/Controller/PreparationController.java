@@ -3,6 +3,7 @@ package com.interviewmaster.Controller;
 import com.interviewmaster.Model.Category;
 import com.interviewmaster.Model.Preparation;
 import com.interviewmaster.Payload.ApiResponse;
+import com.interviewmaster.Payload.InterviewRequisiteDto;
 import com.interviewmaster.Payload.PreparationDto;
 import com.interviewmaster.Service.PreparationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -98,14 +99,28 @@ public class PreparationController {
         }
     }
 
-    @GetMapping("/questions-by-selected-topics/categories-{categories}")
-    public ResponseEntity<List<PreparationDto>> getAllQuestionsByCategoryList(@PathVariable("categories") Set<Category> categoryList) {
-        List<PreparationDto> questions = this.prepServ.getQuestionsByMultipleCategories(categoryList);
+    /*@GetMapping("/questions-by-selected-topics/categories-{categories}")
+    public ResponseEntity<List<PreparationDto>> getAllQuestionsByCategoryList(@PathVariable("categories") List<Category> categoryList) {
+        List<PreparationDto> questions = this.prepServ.getQuestionsByMultipleCategories((InterviewRequisiteDto) categoryList);
         if(questions.isEmpty()) {
             return new ResponseEntity(new ApiResponse("No questions found!!", false), HttpStatus.NOT_FOUND);
         }
         else {
             return ResponseEntity.of(Optional.of(questions));
         }
+    }*/
+
+    @GetMapping("/questions-by-selected-topics")
+    public ResponseEntity<List<PreparationDto>> getAllQuestionsByCategoryList(@Valid @RequestBody InterviewRequisiteDto requisiteDto) {
+        System.out.println("RequsiteDTO - " + requisiteDto);
+        List<PreparationDto> data = this.prepServ.getQuestionsByMultipleCategories(requisiteDto);
+        System.out.println("data - " + data.size());
+        if(data.isEmpty()) {
+            return new ResponseEntity(new ApiResponse("No questions found!!", false), HttpStatus.NOT_FOUND);
+        }
+        else {
+            return ResponseEntity.of(Optional.of(data));
+        }
     }
+
 }
