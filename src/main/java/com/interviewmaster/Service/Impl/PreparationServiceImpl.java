@@ -105,9 +105,9 @@ public class PreparationServiceImpl implements PreparationService {
 
     @Override
     public List<PreparationDto> getQuestionsByMultipleCategories(InterviewRequisiteDto requisiteDto) {
-        System.out.println("Selected Topics - " + requisiteDto.getSelectedTopics());
+        /*System.out.println("Selected Topics - " + requisiteDto.getSelectedTopics());
         System.out.println("Get total questions by user - " + requisiteDto.getQuestionCount());
-        System.out.println("Get Time for each question - " + requisiteDto.getTime());
+        System.out.println("Get Time for each question - " + requisiteDto.getTime());*/
         List<Category> selectedTopics = new ArrayList<>();
         for(int i : requisiteDto.getSelectedTopics()) {
             Category cat = this.catRepo.findById(i).orElseThrow(() -> new ResourceNotFoundException("Category", "id", i));
@@ -130,13 +130,13 @@ public class PreparationServiceImpl implements PreparationService {
         // Pick Random id of the Question from QuestionId List
         Set<Integer> generatedId = new HashSet<>();
         List<PreparationDto> questionsToShow = new ArrayList<>();
-        while (generatedId.size() != requisiteDto.getQuestionCount()) {
+        int c = 0;
+        while (generatedId.size()!=requisiteDto.getQuestionCount() && c!=allQuestionsByCategories.size()) {
             int random = (int) ((Math.random()) * index) + 1;
             if (!generatedId.contains(random)) {
-                //System.out.println("Random Number - " + random);
+                c = c + 1;
                 generatedId.add(random);
                 questionsToShow.add(this.modelMapper.map(questionsWithId.get(random), PreparationDto.class));
-                System.out.println("Size - " + generatedId.size());
             }
 
         }
