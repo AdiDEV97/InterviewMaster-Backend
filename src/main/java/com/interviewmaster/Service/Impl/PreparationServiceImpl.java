@@ -142,7 +142,6 @@ public class PreparationServiceImpl implements PreparationService {
         // Pick Random id of the Question from QuestionId List
         Set<Integer> generatedId = new HashSet<>();
         List<PreparationDto> questionsToShow = new ArrayList<>();
-        Random pickIndex = new Random();
         System.out.println("======================================\n Final Index ---> " + index + "\n=====================================");
         while (generatedId.size() != requisiteDto.getQuestionCount()) {
             int random = (int) ((Math.random()) * index) + 1;
