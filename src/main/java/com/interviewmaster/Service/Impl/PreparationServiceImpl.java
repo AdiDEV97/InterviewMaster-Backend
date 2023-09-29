@@ -13,10 +13,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -113,13 +110,59 @@ public class PreparationServiceImpl implements PreparationService {
         System.out.println("Get Time for each question - " + requisiteDto.getTime());
         List<Category> selectedTopics = new ArrayList<>();
         for(int i : requisiteDto.getSelectedTopics()) {
+        //for(int i=0; i<requisiteDto.getQuestionCount(); i++) {
             Category cat = this.catRepo.findById(i).orElseThrow(() -> new ResourceNotFoundException("Category", "id", i));
+
             selectedTopics.add(cat);
         }
-
+        // All Questions Based on Categories selected by User
         List<Preparation> allQuestionsByCategories = this.prepRepo.findByCategories(selectedTopics);
-        List<PreparationDto> allQuestions = allQuestionsByCategories.stream().map((ques) -> this.modelMapper.map(ques, PreparationDto.class)).collect(Collectors.toList());
-        return allQuestions;
+
+        // Get All Question Ids from allQuestionsByCategories List
+        Map<Integer, Preparation> questionsWithId = new HashMap<>();
+        int index = 0;
+        for(Preparation i : allQuestionsByCategories) {
+            //questionIds.add(i.getId());
+            index += 1;
+            questionsWithId.put(index, i);
+            System.out.println("Index Number ----------------> " + index);
+
+            //System.out.println("Question - " + i.getQuestion() + " \nAnswer - " + i.getAnswer());
+        }
+        //System.out.println("QuestionsId  - " + questionIds);
+        //System.out.println("Questions With Id  - " + questionsWithId);
+
+        List<Integer> questionByCount = new ArrayList<>();
+
+        System.out.println("Questions by Count ------> " + questionByCount);
+        //List<Preparation> questionsByCount = new ArrayList<>();
+
+        /*----------- Proceed from Here... ----------------*/
+
+        // Pick Random id of the Question from QuestionId List
+        Set<Integer> generatedId = new HashSet<>();
+        List<PreparationDto> questionsToShow = new ArrayList<>();
+        Random pickIndex = new Random();
+        System.out.println("======================================\n Final Index ---> " + index + "\n=====================================");
+        while (generatedId.size() != requisiteDto.getQuestionCount()) {
+            int random = (int) ((Math.random()) * index) + 1;
+            //System.out.println("RRR -> " + random);
+            if (!generatedId.contains(random)) {
+                System.out.println("Random Number - " + random/* + " ----> " + questionsWithId.get(random).getId()*/);
+                generatedId.add(random);
+                questionsToShow.add(this.modelMapper.map(questionsWithId.get(random), PreparationDto.class));
+                System.out.println("Size - " + generatedId.size());
+            }
+
+            //System.out.println("Random Number - " + random + " ----> " + questionsWithId.get(random).getId());
+        }
+
+        //List<PreparationDto> questionsToShowDto = questionToShow.stream().map((question) -> this.modelMapper.map(question, PreparationDto.class)).collect(Collectors.toList());
+
+        //List<PreparationDto> allQuestions = allQuestionsByCategories.stream().map((ques) -> this.modelMapper.map(ques, PreparationDto.class)).collect(Collectors.toList());
+
+        //return allQuestions;
+        return questionsToShow;
     }
 
 
