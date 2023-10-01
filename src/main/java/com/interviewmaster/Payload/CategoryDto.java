@@ -14,7 +14,7 @@ public class CategoryDto {
     private int categoryId;
 
     @NotEmpty(message = "Please specify the category title!!")
-    @Size(min=5, max=50, message = "Description should be between 5 to 50 characters!!")
+    @Size(min=2, max=50, message = "Title should be between 2 to 50 characters!!")
     private String categoryTitle;
 
     @NotEmpty(message = "Please specify the category description!!")
