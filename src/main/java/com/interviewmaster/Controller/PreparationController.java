@@ -24,6 +24,13 @@ public class PreparationController {
     @Autowired
     private PreparationService prepServ;
 
+
+    // For Testing
+    @GetMapping("/test")
+    public String testAPI() {
+        return "InterviewMaster Backed is working!!";
+    }
+
     // Get all Questions
     @GetMapping("/all-questions")
     public ResponseEntity<List<PreparationDto>> allQuestions() {
