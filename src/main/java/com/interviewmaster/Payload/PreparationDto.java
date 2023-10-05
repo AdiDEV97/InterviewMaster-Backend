@@ -1,6 +1,7 @@
 package com.interviewmaster.Payload;
 
 import com.interviewmaster.Model.Category;
+import com.interviewmaster.Model.InterviewRequisite;
 import lombok.Data;
 
 import javax.validation.constraints.NotEmpty;

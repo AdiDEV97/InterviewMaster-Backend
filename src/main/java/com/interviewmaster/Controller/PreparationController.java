@@ -118,10 +118,18 @@ public class PreparationController {
     }*/
 
     @GetMapping("/questions-by-selected-topics")
-    public ResponseEntity<List<PreparationDto>> getAllQuestionsByCategoryList(@Valid @RequestBody InterviewRequisiteDto requisiteDto) {
-        System.out.println("RequsiteDTO - " + requisiteDto);
+    public ResponseEntity<List<PreparationDto>> getAllQuestionsByCategoryList(@RequestParam(name="interviewerName") String interviewerName, @RequestParam(name="companyName") String companyName, @RequestParam(name="selectedTopics") List<Integer> selectedTopics, @RequestParam(name="questionCount") int questionCount, @RequestParam(name="time") int time) {
+
+        InterviewRequisiteDto requisiteDto = new InterviewRequisiteDto();
+
+        requisiteDto.setInterviewerName(interviewerName);
+        requisiteDto.setCompanyName(companyName);
+        requisiteDto.setSelectedTopics(selectedTopics);
+        requisiteDto.setQuestionCount(questionCount);
+        requisiteDto.setTime(time);
+
         List<PreparationDto> data = this.prepServ.getQuestionsByMultipleCategories(requisiteDto);
-        System.out.println("data - " + data.size());
+        //System.out.println("data - " + data.size());
         if(data.isEmpty()) {
             return new ResponseEntity(new ApiResponse("No questions found!!", false), HttpStatus.NOT_FOUND);
         }

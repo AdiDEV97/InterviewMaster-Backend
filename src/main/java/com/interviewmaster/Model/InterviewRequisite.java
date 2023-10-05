@@ -13,7 +13,7 @@ public class InterviewRequisite {
     //@Id
     //@GeneratedValue(strategy = GenerationType.AUTO)
     //@Column(name = "id")
-    private int id;
+    //private int id;
 
     //@Column(name = "interviewerName")
     private String interviewerName;
