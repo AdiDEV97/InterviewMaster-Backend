@@ -45,7 +45,7 @@ public class PreparationServiceImpl implements PreparationService {
     public PreparationDto addNewQuestion(PreparationDto preparationDto, int categoryId) {
         Category category = this.catRepo.findById(categoryId).orElseThrow(() -> new ResourceNotFoundException("Category", "categoryId", categoryId));
         Preparation question = this.modelMapper.map(preparationDto, Preparation.class);
-        question.setCorrect(false);
+        question.setCorrect("Not Attempted");
         question.setCategory(category);
         Preparation saveQuestion = this.prepRepo.save(question);
         return this.modelMapper.map(saveQuestion, PreparationDto.class);
@@ -56,8 +56,8 @@ public class PreparationServiceImpl implements PreparationService {
         Preparation questionToUpdate = this.prepRepo.findById(id).orElseThrow(() -> new ResourceNotFoundException("Question", "id", id));
         questionToUpdate.setQuestion(preparationDto.getQuestion());
         questionToUpdate.setAnswer(preparationDto.getAnswer());
-        System.out.println("IsCorrect - " + preparationDto.isCorrect());
-        questionToUpdate.setCorrect(preparationDto.isCorrect());
+        System.out.println("IsCorrect - " + preparationDto.getCorrect());
+        questionToUpdate.setCorrect(preparationDto.getCorrect());
         this.prepRepo.save(questionToUpdate);
         return this.modelMapper.map(questionToUpdate, PreparationDto.class);
     }
@@ -144,4 +144,28 @@ public class PreparationServiceImpl implements PreparationService {
     }
 
 
+    @Override
+    public PreparationDto updateStatus(int id, String status) {
+        /*Preparation question = this.prepRepo.findById(id).orElseThrow(() -> new ResourceNotFoundException("Preparation", "id", id));
+
+        System.out.println("Question to change status - " + question);
+
+        *//*question.setQuestion(question.getQuestion());
+        question.setAnswer(question.getAnswer());*//*
+        question.setCorrect(preparationDto.getCorrect());
+
+        System.out.println("Question to After change - " + question);
+
+        this.prepRepo.save(question);
+
+        return this.modelMapper.map(question, PreparationDto.class);*/
+
+        Preparation questionToUpdate = this.prepRepo.findById(id).orElseThrow(() -> new ResourceNotFoundException("Question", "id", id));
+        //questionToUpdate.setQuestion(preparationDto.getQuestion());
+        //questionToUpdate.setAnswer(preparationDto.getAnswer());
+        System.out.println("IsCorrect - " + status);
+        questionToUpdate.setCorrect(status);
+        this.prepRepo.save(questionToUpdate);
+        return this.modelMapper.map(questionToUpdate, PreparationDto.class);
+    }
 }

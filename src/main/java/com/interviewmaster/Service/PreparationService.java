@@ -38,4 +38,6 @@ public interface PreparationService {
     //List<PreparationDto> getQuestionsByMultipleCategories(Set<Category> categories);
 
     List<PreparationDto> getQuestionsByMultipleCategories(InterviewRequisiteDto requisiteDto);
+
+    PreparationDto updateStatus(int id, String status);
 }

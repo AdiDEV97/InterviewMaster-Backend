@@ -138,4 +138,11 @@ public class PreparationController {
         }
     }
 
+
+    @PutMapping ("/update-status/id-{id}")
+    public ResponseEntity<PreparationDto> updateStatusApi(@Valid @PathVariable int id, @RequestBody String status) {
+        PreparationDto savedUpdate = this.prepServ.updateStatus(id, status);
+        return ResponseEntity.of(Optional.of(savedUpdate));
+    }
+
 }

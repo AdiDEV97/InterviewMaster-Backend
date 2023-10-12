@@ -1,5 +1,6 @@
 package com.interviewmaster.Model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.Value;
 
@@ -23,7 +24,7 @@ public class Preparation {
     private String answer;
 
     @Column(name = "isCorrect")
-    private boolean correct;
+    private String correct;
 
     @ManyToOne
     @JoinColumn(name = "category_id")
