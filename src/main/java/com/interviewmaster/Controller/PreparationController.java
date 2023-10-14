@@ -18,7 +18,7 @@ import java.util.Set;
 
 @RestController
 @RequestMapping("/api/v1/prep")
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = {"http://localhost:3000", "http://16.170.82.157:5001"})
 public class PreparationController {
 
     @Autowired
