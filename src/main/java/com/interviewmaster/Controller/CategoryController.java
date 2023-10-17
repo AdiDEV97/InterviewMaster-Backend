@@ -14,7 +14,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/category")
-@CrossOrigin(origins = {"http://localhost:3000", "http://16.170.82.157", "http://localhost:5001"})
+@CrossOrigin(origins = {"http://localhost:3000", "http://16.170.82.157", "http://localhost:5001", "http://interviewmaster.pavson.com"})
 public class CategoryController {
 
     @Autowired
