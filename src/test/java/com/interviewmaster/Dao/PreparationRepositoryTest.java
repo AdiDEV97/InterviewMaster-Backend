@@ -112,13 +112,21 @@ public class PreparationRepositoryTest {
     // Test Case for Successful
     @Test
     void testSearchByQuestion_found() {
-        List<Preparation> listOfQuestions = this.preparationRepo.searchByQuestion("%JPA%");
+        List<Preparation> listOfQuestions = this.preparationRepo.searchByQuestion("%What%");
         System.out.println("List - " + listOfQuestions);
         System.out.println("Size - " + listOfQuestions.size());
         System.out.println("Expected - " + preparation1.getQuestion());
         System.out.println("Actual - " + listOfQuestions.get(0).getQuestion());
 
         // assertThat(actual).isEqualTo(expected)
-        assertThat(listOfQuestions.get(0).getQuestion()).isEqualTo(preparation1.getQuestion());
+        assertThat(listOfQuestions.get(1).getQuestion()).isEqualTo(preparation1.getQuestion());
+    }
+
+    @Test
+    void testSearchByQuestion_notFound() {
+        List<Preparation> listOfQuestions = this.preparationRepo.searchByQuestion("%spring%");
+        System.out.println("List - " + listOfQuestions);
+        System.out.println("Size - " + listOfQuestions.size());
+        assertThat(listOfQuestions.isEmpty()).isTrue();
     }
 }
