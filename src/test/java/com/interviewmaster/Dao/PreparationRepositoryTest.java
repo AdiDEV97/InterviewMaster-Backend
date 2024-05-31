@@ -84,6 +84,7 @@ public class PreparationRepositoryTest {
 
     // Test Cases
 
+    // ------------------------  FindByCategory --------------------------
     // Test Case for Successful
     @Test
     void testFindByCategory_found() {
@@ -105,5 +106,19 @@ public class PreparationRepositoryTest {
         System.out.println("List of Questions - " + questionByCategory1);
         System.out.println("List size - " + questionByCategory1.size());
         assertThat(questionByCategory1.isEmpty()).isTrue();
+    }
+
+    // ---------------------  SearchByQuestion  ----------------------
+    // Test Case for Successful
+    @Test
+    void testSearchByQuestion_found() {
+        List<Preparation> listOfQuestions = this.preparationRepo.searchByQuestion("%JPA%");
+        System.out.println("List - " + listOfQuestions);
+        System.out.println("Size - " + listOfQuestions.size());
+        System.out.println("Expected - " + preparation1.getQuestion());
+        System.out.println("Actual - " + listOfQuestions.get(0).getQuestion());
+
+        // assertThat(actual).isEqualTo(expected)
+        assertThat(listOfQuestions.get(0).getQuestion()).isEqualTo(preparation1.getQuestion());
     }
 }
