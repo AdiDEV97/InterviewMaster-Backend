@@ -5,11 +5,15 @@ import com.interviewmaster.Model.Preparation;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.test.annotation.DirtiesContext;
+
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @DataJpaTest
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)// Forced to RESET the database after each test method
 public class PreparationRepositoryTest {
 
     @Autowired
@@ -30,11 +34,15 @@ public class PreparationRepositoryTest {
     Category category;
     Category category1;
 
+    List<Category> selectedTopics;
+
+    List<Preparation> listOfQuestions_expected;
+
     // Before Each Test
     @BeforeEach
     void setUp() {
         category = new Category();
-        category.setCategoryId(0);
+        category.setCategoryId(1);
         category.setCategoryTitle("Java1");
         category.setCategoryDescription("All Java1 Questions");
         this.categoryRepo.save(category);
@@ -62,12 +70,17 @@ public class PreparationRepositoryTest {
         preparation1.setCategory(category);
         this.preparationRepo.save(preparation1);
         System.out.println("---------- SetUp Completed --------------");
+
+        selectedTopics = new ArrayList<>();
+        selectedTopics.add(category);
+        selectedTopics.add(category1);
+        listOfQuestions_expected = this.preparationRepo.findByCategories(selectedTopics);
     }
 
     // After Each Test
     @AfterEach
     void tearDown() {
-
+        System.out.println("AfterEach --> prepRepo.findAll() 1 --> " + preparationRepo.findAll());
         this.preparationRepo.deleteAll();
         this.preparationRepo1.deleteAll();
         this.categoryRepo.deleteAll();
@@ -78,6 +91,8 @@ public class PreparationRepositoryTest {
         preparation1 = null;
         category = null;
         category1 = null;*/
+
+        System.out.println("AfterEach --> prepRepo.findAll() 2 --> " + preparationRepo.findAll());
         System.out.println("---------- TearDown Completed --------------");
     }
 
@@ -94,6 +109,8 @@ public class PreparationRepositoryTest {
         for(Preparation p : questionByCategory) {
             System.out.println("---> " + p);
         }
+        System.out.println("Expected - " + preparation.getId());
+        System.out.println("Actual - " + questionByCategory.get(0).getId());
         assertThat(questionByCategory.get(0).getId()).isEqualTo(preparation.getId());
         assertThat(questionByCategory.get(1).getQuestion()).isEqualTo(preparation1.getQuestion());
     }
@@ -122,11 +139,25 @@ public class PreparationRepositoryTest {
         assertThat(listOfQuestions.get(1).getQuestion()).isEqualTo(preparation1.getQuestion());
     }
 
+    // Test Case for Failure
     @Test
     void testSearchByQuestion_notFound() {
         List<Preparation> listOfQuestions = this.preparationRepo.searchByQuestion("%spring%");
         System.out.println("List - " + listOfQuestions);
         System.out.println("Size - " + listOfQuestions.size());
         assertThat(listOfQuestions.isEmpty()).isTrue();
+    }
+
+
+    // -----------------------  FindByCategories  ------------------------
+    // Test Case for Success
+    @Test
+    void testFindByCategories_found() {
+        List<Preparation> listOfQuestions_actual = this.preparationRepo.findByCategories(selectedTopics);
+        System.out.println("List - " + listOfQuestions_actual);
+        System.out.println("Size - " + listOfQuestions_actual.size());
+        System.out.println("Expected - " + listOfQuestions_expected.get(0).getQuestion());
+        System.out.println("Actual - " + listOfQuestions_expected.get(0).getQuestion());
+        assertThat(listOfQuestions_actual.get(0).getQuestion()).isEqualTo(listOfQuestions_expected.get(0).getQuestion());
     }
 }

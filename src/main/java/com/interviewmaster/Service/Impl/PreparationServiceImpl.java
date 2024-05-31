@@ -108,6 +108,7 @@ public class PreparationServiceImpl implements PreparationService {
         /*System.out.println("Selected Topics - " + requisiteDto.getSelectedTopics());
         System.out.println("Get total questions by user - " + requisiteDto.getQuestionCount());
         System.out.println("Get Time for each question - " + requisiteDto.getTime());*/
+        System.out.println("--------------  getQuestionsByMultipleCategories() running...");
         List<Category> selectedTopics = new ArrayList<>();
         for(int i : requisiteDto.getSelectedTopics()) {
             Category cat = this.catRepo.findById(i).orElseThrow(() -> new ResourceNotFoundException("Category", "id", i));
@@ -116,6 +117,10 @@ public class PreparationServiceImpl implements PreparationService {
         }
         // All Questions Based on Categories selected by User
         List<Preparation> allQuestionsByCategories = this.prepRepo.findByCategories(selectedTopics);
+        System.out.println("---------------- FindByCategories size - " + allQuestionsByCategories.size());
+        for(Preparation p : allQuestionsByCategories) {
+            System.out.println("--------- Question - " + p.getQuestion());
+        }
 
         // Get All Question Ids from allQuestionsByCategories List
         Map<Integer, Preparation> questionsWithId = new HashMap<>();
