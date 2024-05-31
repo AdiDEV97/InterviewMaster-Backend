@@ -160,4 +160,14 @@ public class PreparationRepositoryTest {
         System.out.println("Actual - " + listOfQuestions_expected.get(0).getQuestion());
         assertThat(listOfQuestions_actual.get(0).getQuestion()).isEqualTo(listOfQuestions_expected.get(0).getQuestion());
     }
+
+    // Test Case for Failure
+    @Test
+    void testFindByCategories_notFound() {
+        selectedTopics = new ArrayList<>();
+        selectedTopics.add(category1);
+        List<Preparation> listOfQuestions_actual = this.preparationRepo.findByCategories(selectedTopics);
+        System.out.println("listOfQuestions_actual - " + listOfQuestions_actual);
+        assertThat(listOfQuestions_actual.isEmpty()).isTrue();
+    }
 }
