@@ -2,12 +2,9 @@ package com.interviewmaster.Dao;
 
 import com.interviewmaster.Model.Category;
 import com.interviewmaster.Model.Preparation;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-
 import java.util.List;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -19,7 +16,13 @@ public class CategoryRepositoryTest {
     private PreparationRepo preparationRepo;
 
     @Autowired
+    private PreparationRepo preparationRepo1;
+
+    @Autowired
     private CategoryRepository categoryRepo;
+
+    @Autowired
+    private CategoryRepository categoryRepo1;
 
     Preparation preparation;
     Preparation preparation1;
@@ -27,11 +30,11 @@ public class CategoryRepositoryTest {
     Category category;
     Category category1;
 
-    // Before Test
+    // Before Each Test
     @BeforeEach
     void setUp() {
         category = new Category();
-        category.setCategoryId(1);
+        category.setCategoryId(0);
         category.setCategoryTitle("Java1");
         category.setCategoryDescription("All Java1 Questions");
         this.categoryRepo.save(category);
@@ -58,15 +61,24 @@ public class CategoryRepositoryTest {
         preparation1.setCorrect("Not Attempted");
         preparation1.setCategory(category);
         this.preparationRepo.save(preparation1);
-
-
+        System.out.println("---------- SetUp Completed --------------");
     }
 
-    // After Test
+    // After Each Test
     @AfterEach
     void tearDown() {
-        preparation = null;
+
         this.preparationRepo.deleteAll();
+        this.preparationRepo1.deleteAll();
+        this.categoryRepo.deleteAll();
+        this.categoryRepo1.deleteAll();
+        //this.categoryRepo.save(category);
+        //this.preparationRepo.save(preparation);
+        /*this.preparation = null;
+        preparation1 = null;
+        category = null;
+        category1 = null;*/
+        System.out.println("---------- TearDown Completed --------------");
     }
 
 
@@ -81,7 +93,17 @@ public class CategoryRepositoryTest {
         for(Preparation p : questionByCategory) {
             System.out.println("---> " + p);
         }
-        assertThat(questionByCategory.get(1).getId()).isEqualTo(preparation1.getId());
+        assertThat(questionByCategory.get(0).getId()).isEqualTo(preparation.getId());
         assertThat(questionByCategory.get(1).getQuestion()).isEqualTo(preparation1.getQuestion());
+    }
+
+    // Test Case for Failure
+    @Test
+    void testFindByCategory_notFound() {
+        System.out.println("test case 2!!!");
+        List<Preparation> questionByCategory1 = this.preparationRepo1.findByCategory(category1);
+        System.out.println("List of Questions - " + questionByCategory1);
+        System.out.println("List size - " + questionByCategory1.size());
+        assertThat(questionByCategory1.isEmpty()).isTrue();
     }
 }
