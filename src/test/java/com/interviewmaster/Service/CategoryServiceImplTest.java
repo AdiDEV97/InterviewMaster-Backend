@@ -76,8 +76,8 @@ public class CategoryServiceImplTest {
         when(modelMapper.map(category, CategoryDto.class)).thenReturn(categoryDto);
         when(modelMapper.map(categoryDto, Category.class)).thenReturn(category);
 
-        assertThat(this.catServ.allCategories().get(0).getCategoryTitle()).isEqualTo("Java");
-        assertThat(this.catServ.allCategories().get(0).getCategoryDescription()).isEqualTo(allCategoryList.get(0).getCategoryDescription());
+        assertThat(this.catServ.allCategories().get(0).getCategoryTitle()).isEqualTo(allCategoryList.get(0).getCategoryTitle()); // Java
+        assertThat(this.catServ.allCategories().get(0).getCategoryDescription()).isEqualTo(allCategoryList.get(0).getCategoryDescription()); // All Java Questions
     }
 
     @Test
