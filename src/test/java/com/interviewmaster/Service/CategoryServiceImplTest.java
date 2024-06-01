@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
@@ -72,12 +73,25 @@ public class CategoryServiceImplTest {
 
     @Test
     void testAllCategories() {
-        when(catRepo.findAll()).thenReturn(Arrays.asList(category));
+        when(catRepo.findAll()).thenReturn(allCategoryList);
         when(modelMapper.map(category, CategoryDto.class)).thenReturn(categoryDto);
         when(modelMapper.map(categoryDto, Category.class)).thenReturn(category);
 
         assertThat(this.catServ.allCategories().get(0).getCategoryTitle()).isEqualTo(allCategoryList.get(0).getCategoryTitle()); // Java
         assertThat(this.catServ.allCategories().get(0).getCategoryDescription()).isEqualTo(allCategoryList.get(0).getCategoryDescription()); // All Java Questions
+    }
+
+    @Test
+    void testCategoryById() {
+        when(catRepo.findById(1)).thenReturn(Optional.of(allCategoryList.get(0)));
+        when(modelMapper.map(category, CategoryDto.class)).thenReturn(categoryDto);
+        when(modelMapper.map(categoryDto, Category.class)).thenReturn(category);
+
+        System.out.println("Actual - " + this.catServ.categoryById(1).getCategoryId());
+        System.out.println("Expected - " + this.allCategoryList.get(0).getCategoryId());
+        assertThat(this.catServ.categoryById(1).getCategoryId()).isEqualTo(this.allCategoryList.get(0).getCategoryId());
+        assertThat(this.catServ.categoryById(1).getCategoryTitle()).isEqualTo(this.allCategoryList.get(0).getCategoryTitle());
+
     }
 
     @Test
