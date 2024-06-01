@@ -5,6 +5,8 @@ import com.interviewmaster.Exceptions.ResourceNotFoundException;
 import com.interviewmaster.Model.Category;
 import com.interviewmaster.Payload.CategoryDto;
 import com.interviewmaster.Service.CategoryService;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,6 +15,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@AllArgsConstructor
+@NoArgsConstructor
 public class CategoryServiceImpl implements CategoryService {
 
     @Autowired
@@ -20,6 +24,9 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Autowired
     private ModelMapper modelMapper;
+
+    /*public CategoryServiceImpl(CategoryRepository catRepo) {
+    }*/
 
     @Override
     public List<CategoryDto> allCategories() {
