@@ -16,6 +16,10 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -36,7 +40,11 @@ public class CategoryServiceImplTest {
     AutoCloseable autoCloseable;
 
     Category category;
+    Category category1;
     CategoryDto categoryDto;
+    CategoryDto categoryDto1;
+
+    List<Category> allCategoryList;
 
 
 
@@ -49,13 +57,27 @@ public class CategoryServiceImplTest {
 
         //catServ = new CategoryServiceImpl();
         category = new Category(1, "Java", "All Java Questions", null);
+        category1 = new Category(1, "JPA", "All Java Questions", null);
         categoryDto = new CategoryDto(1, "Java", "All Java Questions");
+        categoryDto1 = this.modelMapper.map(category1, CategoryDto.class);
+
+        allCategoryList = new ArrayList<>(Arrays.asList(category, category1));
     }
 
     @AfterEach
     void tearDown() throws Exception {
         this.autoCloseable.close();
         Mockito.reset(catRepo); // to reset the Mock Object which is created using @Mock annotation
+    }
+
+    @Test
+    void testAllCategories() {
+        when(catRepo.findAll()).thenReturn(Arrays.asList(category));
+        when(modelMapper.map(category, CategoryDto.class)).thenReturn(categoryDto);
+        when(modelMapper.map(categoryDto, Category.class)).thenReturn(category);
+
+        assertThat(this.catServ.allCategories().get(0).getCategoryTitle()).isEqualTo("Java");
+        assertThat(this.catServ.allCategories().get(0).getCategoryDescription()).isEqualTo(allCategoryList.get(0).getCategoryDescription());
     }
 
     @Test
