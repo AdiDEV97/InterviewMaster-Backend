@@ -1,7 +1,9 @@
 package com.interviewmaster.Payload;
 
 import com.interviewmaster.Model.Preparation;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
 import javax.validation.constraints.NotEmpty;
@@ -9,6 +11,8 @@ import javax.validation.constraints.Size;
 import java.util.List;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class CategoryDto {
 
     private int categoryId;
