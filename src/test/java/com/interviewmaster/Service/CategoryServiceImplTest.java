@@ -16,14 +16,12 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.*;
 
 
 //@ExtendWith(MockitoExtension.class) // To Enable all the Mockito Annotations
@@ -40,10 +38,10 @@ public class CategoryServiceImplTest {
 
     AutoCloseable autoCloseable;
 
-    Category category;
     Category category1;
-    CategoryDto categoryDto;
+    Category category2;
     CategoryDto categoryDto1;
+    CategoryDto categoryDto2;
 
     List<Category> allCategoryList;
 
@@ -57,12 +55,14 @@ public class CategoryServiceImplTest {
         autoCloseable = MockitoAnnotations.openMocks(this); // To Enable all the Mockito Annotations
 
         //catServ = new CategoryServiceImpl();
-        category = new Category(1, "Java", "All Java Questions", null);
-        category1 = new Category(1, "JPA", "All Java Questions", null);
-        categoryDto = new CategoryDto(1, "Java", "All Java Questions");
-        categoryDto1 = this.modelMapper.map(category1, CategoryDto.class);
+        category1 = new Category(1, "Java", "All Java Questions", null);
+        category2 = new Category(1, "JPA", "All JPA Questions", null);
+        categoryDto1 = new CategoryDto(1, "Java", "All Java Questions");
+        categoryDto2 = new CategoryDto(1, "JPA", "All JPA Questions");
+        //categoryDto1 = this.modelMapper.map(category1, CategoryDto.class);
+        //System.out.println("SetUp --> CategoryDto1 - " + categoryDto1);
 
-        allCategoryList = new ArrayList<>(Arrays.asList(category, category1));
+        allCategoryList = new ArrayList<>(Arrays.asList(category1, category2));
     }
 
     @AfterEach
@@ -74,8 +74,8 @@ public class CategoryServiceImplTest {
     @Test
     void testAllCategories() {
         when(catRepo.findAll()).thenReturn(allCategoryList);
-        when(modelMapper.map(category, CategoryDto.class)).thenReturn(categoryDto);
-        when(modelMapper.map(categoryDto, Category.class)).thenReturn(category);
+        when(modelMapper.map(category1, CategoryDto.class)).thenReturn(categoryDto1);
+        when(modelMapper.map(categoryDto1, Category.class)).thenReturn(category1);
 
         assertThat(this.catServ.allCategories().get(0).getCategoryTitle()).isEqualTo(allCategoryList.get(0).getCategoryTitle()); // Java
         assertThat(this.catServ.allCategories().get(0).getCategoryDescription()).isEqualTo(allCategoryList.get(0).getCategoryDescription()); // All Java Questions
@@ -84,8 +84,8 @@ public class CategoryServiceImplTest {
     @Test
     void testCategoryById() {
         when(catRepo.findById(1)).thenReturn(Optional.of(allCategoryList.get(0)));
-        when(modelMapper.map(category, CategoryDto.class)).thenReturn(categoryDto);
-        when(modelMapper.map(categoryDto, Category.class)).thenReturn(category);
+        when(modelMapper.map(category1, CategoryDto.class)).thenReturn(categoryDto1);
+        when(modelMapper.map(categoryDto1, Category.class)).thenReturn(category1);
 
         System.out.println("Actual - " + this.catServ.categoryById(1).getCategoryId());
         System.out.println("Expected - " + this.allCategoryList.get(0).getCategoryId());
@@ -96,13 +96,30 @@ public class CategoryServiceImplTest {
 
     @Test
     void testNewCategory() {
-        //mock(CategoryRepository.class);
-        //mock(Category.class);
+        when(catRepo.save(category1)).thenReturn(category1); // Mocking catRepo.save() method
+        when(modelMapper.map(category1, CategoryDto.class)).thenReturn(categoryDto1); // Mocking modelMapper.map() method
+        when(modelMapper.map(categoryDto1, Category.class)).thenReturn(category1); // Mocking modelMapper.map() method
 
-        when(catRepo.save(category)).thenReturn(category);
-        when(modelMapper.map(category, CategoryDto.class)).thenReturn(categoryDto);
-        when(modelMapper.map(categoryDto, Category.class)).thenReturn(category);
+        assertThat(catServ.newCategory(categoryDto1).getCategoryId()).isEqualTo(category1.getCategoryId());
+    }
 
-        assertThat(catServ.newCategory(categoryDto).getCategoryId()).isEqualTo(category.getCategoryId());
+    @Test
+    void testUpdateCategory() {
+        when(catRepo.findById(category1.getCategoryId())).thenReturn(Optional.of(category1));
+        when(catRepo.save(any(Category.class))).thenReturn(category1, category2);
+
+        when(modelMapper.map(category1, CategoryDto.class)).thenReturn(categoryDto2); // IMP
+
+        CategoryDto updatedCategory = catServ.updateCategory(1, categoryDto2);
+        CategoryDto updatedCategory2 = catServ.updateCategory(1, categoryDto1);
+
+        assertThat(catServ.updateCategory(1, categoryDto2).getCategoryTitle()).isEqualTo(categoryDto2.getCategoryTitle());
+    }
+
+    @Test
+    void testDeleteCategory() {
+        when(this.catRepo.findById(category1.getCategoryId())).thenReturn(Optional.of(category1));
+        doNothing().when(this.catRepo).delete(any(Category.class));
+        catServ.deleteCategory(1);
     }
 }
