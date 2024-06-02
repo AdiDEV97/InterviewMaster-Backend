@@ -105,11 +105,7 @@ public class CategoryServiceImplTest {
     void testUpdateCategory() {
         when(catRepo.findById(category1.getCategoryId())).thenReturn(Optional.of(category1));
         when(catRepo.save(any(Category.class))).thenReturn(category1, category2);
-
         when(modelMapper.map(category1, CategoryDto.class)).thenReturn(categoryDto2); // IMP
-
-        CategoryDto updatedCategory = catServ.updateCategory(1, categoryDto2);
-        CategoryDto updatedCategory2 = catServ.updateCategory(1, categoryDto1);
 
         assertThat(catServ.updateCategory(1, categoryDto2).getCategoryTitle()).isEqualTo(categoryDto2.getCategoryTitle());
     }
