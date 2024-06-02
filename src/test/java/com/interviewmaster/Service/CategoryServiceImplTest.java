@@ -49,18 +49,12 @@ public class CategoryServiceImplTest {
 
     @BeforeEach
     void setUp() {
-
-        //modelMapper = mock(ModelMapper.class);
-
         autoCloseable = MockitoAnnotations.openMocks(this); // To Enable all the Mockito Annotations
 
-        //catServ = new CategoryServiceImpl();
         category1 = new Category(1, "Java", "All Java Questions", null);
         category2 = new Category(1, "JPA", "All JPA Questions", null);
         categoryDto1 = new CategoryDto(1, "Java", "All Java Questions");
         categoryDto2 = new CategoryDto(1, "JPA", "All JPA Questions");
-        //categoryDto1 = this.modelMapper.map(category1, CategoryDto.class);
-        //System.out.println("SetUp --> CategoryDto1 - " + categoryDto1);
 
         allCategoryList = new ArrayList<>(Arrays.asList(category1, category2));
     }
