@@ -75,7 +75,6 @@ public class CategoryServiceImplTest {
     void testAllCategories() {
         when(catRepo.findAll()).thenReturn(allCategoryList);
         when(modelMapper.map(category1, CategoryDto.class)).thenReturn(categoryDto1);
-        when(modelMapper.map(categoryDto1, Category.class)).thenReturn(category1);
 
         assertThat(this.catServ.allCategories().get(0).getCategoryTitle()).isEqualTo(allCategoryList.get(0).getCategoryTitle()); // Java
         assertThat(this.catServ.allCategories().get(0).getCategoryDescription()).isEqualTo(allCategoryList.get(0).getCategoryDescription()); // All Java Questions
