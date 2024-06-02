@@ -85,7 +85,6 @@ public class CategoryServiceImplTest {
     void testCategoryById() {
         when(catRepo.findById(1)).thenReturn(Optional.of(allCategoryList.get(0)));
         when(modelMapper.map(category1, CategoryDto.class)).thenReturn(categoryDto1);
-        when(modelMapper.map(categoryDto1, Category.class)).thenReturn(category1);
 
         System.out.println("Actual - " + this.catServ.categoryById(1).getCategoryId());
         System.out.println("Expected - " + this.allCategoryList.get(0).getCategoryId());
