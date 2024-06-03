@@ -1,7 +1,9 @@
 package com.interviewmaster.Model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.Value;
 
 import javax.persistence.*;
@@ -9,6 +11,8 @@ import javax.validation.constraints.Size;
 
 @Entity
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class Preparation {
 
     @Id
