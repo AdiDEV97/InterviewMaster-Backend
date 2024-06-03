@@ -128,4 +128,15 @@ public class PreparationServiceImplTest {
         assertThat(this.preparationServ.getQuestionById(1).getQuestion()).isEqualTo(this.allQuestions.get(0).getQuestion());
         assertThat(this.preparationServ.getQuestionById(1).getId()).isEqualTo(this.allQuestions.get(0).getId());
     }
+
+    @Test
+    public void testAddNewQuestion() {
+        when(this.catRepo.findById(preparation1.getId())).thenReturn(Optional.of(category));
+        when(this.modelMapper.map(any(PreparationDto.class), eq(Preparation.class))).thenReturn(preparation1);
+        when(this.modelMapper.map(any(Preparation.class), eq(PreparationDto.class))).thenReturn(preparationDto1);
+        when(this.prepRepo.save(preparation1)).thenReturn(preparation1);
+
+        assertThat(this.preparationServ.addNewQuestion(preparationDto1, 1).getQuestion()).isEqualTo(preparation1.getQuestion());
+        assertThat(this.preparationServ.addNewQuestion(preparationDto1, 1).getId()).isEqualTo(preparation1.getId());
+    }
 }
