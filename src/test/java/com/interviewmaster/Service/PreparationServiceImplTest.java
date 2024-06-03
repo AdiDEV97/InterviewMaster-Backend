@@ -21,6 +21,7 @@ import org.modelmapper.ModelMapper;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -113,8 +114,18 @@ public class PreparationServiceImplTest {
         when(prepRepo.findAll()).thenReturn(this.allQuestions);
         when(modelMapper.map(any(Preparation.class), eq(PreparationDto.class))).thenReturn(preparationDto1);
 
+
         assertThat(this.preparationServ.getAllQuestions().get(0).getId()).isEqualTo(this.allQuestions.get(0).getId());
         assertThat(this.preparationServ.getAllQuestions().get(0).getQuestion()).isEqualTo(this.allQuestions.get(0).getQuestion());
         assertThat(this.preparationServ.getAllQuestions().size()).isEqualTo(this.allQuestions.size());
+    }
+
+    @Test
+    public void testGetQuestionById() {
+        when(this.prepRepo.findById(preparation1.getId())).thenReturn(Optional.of(preparation1));
+        when(modelMapper.map(any(Preparation.class), eq(PreparationDto.class))).thenReturn(preparationDto1);
+
+        assertThat(this.preparationServ.getQuestionById(1).getQuestion()).isEqualTo(this.allQuestions.get(0).getQuestion());
+        assertThat(this.preparationServ.getQuestionById(1).getId()).isEqualTo(this.allQuestions.get(0).getId());
     }
 }
