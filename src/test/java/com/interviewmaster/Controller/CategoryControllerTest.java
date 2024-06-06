@@ -56,12 +56,21 @@ public class CategoryControllerTest {
     }
 
     @Test
-    public void testGetAllCategories() throws Exception {
+    public void testGetAllCategories_found() throws Exception {
         when(this.catServ.allCategories()).thenReturn(categoryList);
 
         this.mockMvc.perform(get("/api/v1/category/all-categories")).andDo(print()).andExpect(status().isOk());
         this.mockMvc.perform(get("/api/v1/category/all-categories")).andExpect(content().contentType(MediaType.APPLICATION_JSON));
         this.mockMvc.perform(get("/api/v1/category/all-categories")).andExpect(jsonPath("$").isArray());
+    }
+
+    @Test
+    public void testGetAllCategories_not_Found() throws Exception {
+        when(this.catServ.allCategories()).thenReturn(new ArrayList<CategoryDto>());
+
+        this.mockMvc.perform(get("/api/v1/category/all-categories")).andDo(print()).andExpect(status().isNoContent());
+        //this.mockMvc.perform(get("/api/v1/category/all-categories")).andExpect(content().contentType(MediaType.APPLICATION_JSON));
+        //this.mockMvc.perform(get("/api/v1/category/all-categories")).andExpect(jsonPath("$").isArray());
     }
 
 
