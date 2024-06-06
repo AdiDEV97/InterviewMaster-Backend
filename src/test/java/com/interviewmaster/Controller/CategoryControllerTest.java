@@ -75,13 +75,20 @@ public class CategoryControllerTest {
 
 
     @Test
-    public void testGetCategoryById() throws Exception {
+    public void testGetCategoryById_found() throws Exception {
         when(this.catServ.categoryById(1)).thenReturn(categoryDto1);
 
         this.mockMvc.perform(get("/api/v1/category/id-1")).andDo(print()).andExpect(jsonPath("$.categoryId").value(1));
         this.mockMvc.perform(get("/api/v1/category/id-1")).andExpect(jsonPath("$.categoryTitle").value("Java"));
         this.mockMvc.perform(get("/api/v1/category/id-1")).andExpect(jsonPath("$.categoryDescription").value("All Java Questions"));
         this.mockMvc.perform(get("/api/v1/category/id-1")).andExpect(content().contentType(MediaType.APPLICATION_JSON));
+    }
+
+    @Test
+    public void testGetCategoryById_notFound() throws Exception {
+        when(this.catServ.categoryById(3)).thenReturn(null);
+
+        this.mockMvc.perform(get("/api/v1/category/id-3")).andDo(print()).andExpect(status().isNotFound());
     }
 
     @Test
