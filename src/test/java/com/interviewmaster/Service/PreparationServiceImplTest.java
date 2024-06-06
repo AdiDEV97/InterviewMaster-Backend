@@ -157,4 +157,15 @@ public class PreparationServiceImplTest {
         doNothing().when(this.prepRepo).delete(any(Preparation.class));
         this.preparationServ.deleteQuestion(1);
     }
+
+    @Test
+    public void getAllQuestionsByCategory() {
+        when(this.catRepo.findById(1)).thenReturn(Optional.of(category));
+        when(this.prepRepo.findByCategory(category)).thenReturn(allQuestions);
+        when(this.modelMapper.map(preparation1, PreparationDto.class)).thenReturn(preparationDto1);
+
+        assertThat(this.preparationServ.getAllQuestionsByCategory(1).get(0).getQuestion()).isEqualTo(preparation1.getQuestion());
+        assertThat(this.preparationServ.getAllQuestionsByCategory(1).get(0).getAnswer()).isEqualTo(allQuestions.get(0).getAnswer());
+        assertThat(this.preparationServ.getAllQuestionsByCategory(1).size()).isEqualTo(allQuestions.size());
+    }
 }
