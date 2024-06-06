@@ -14,11 +14,13 @@ import org.springframework.http.MediaType;
 import org.springframework.http.StreamingHttpOutputMessage;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.regex.MatchResult;
 
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*; // get() method
@@ -66,6 +68,19 @@ public class CategoryControllerTest {
         this.mockMvc.perform(get("/api/v1/category/all-categories")).andDo(print()).andExpect(status().isOk());
         this.mockMvc.perform(get("/api/v1/category/all-categories")).andExpect(content().contentType(MediaType.APPLICATION_JSON));
         this.mockMvc.perform(get("/api/v1/category/all-categories")).andExpect(jsonPath("$").isArray());
+    }
+
+
+    @Test
+    public void testGetCategoryById() throws Exception {
+        when(this.catServ.categoryById(1)).thenReturn(categoryDto1);
+
+        //ResultActions c = this.mockMvc.perform(get("/api/v1/category/id-1")).andDo(print());
+        //System.out.println("---------------- C - " + (CategoryDto)c);
+        this.mockMvc.perform(get("/api/v1/category/id-1")).andDo(print()).andExpect(jsonPath("$.categoryId").value(1));
+        this.mockMvc.perform(get("/api/v1/category/id-1")).andExpect(jsonPath("$.categoryTitle").value("Java"));
+        this.mockMvc.perform(get("/api/v1/category/id-1")).andExpect(jsonPath("$.categoryDescription").value("All Java Questions"));
+        this.mockMvc.perform(get("/api/v1/category/id-1")).andExpect(content().contentType(MediaType.APPLICATION_JSON));
     }
 
 
