@@ -91,6 +91,7 @@ public class CategoryControllerTest {
     public void testAddNewCategory() throws Exception {
         when(this.catServ.newCategory(categoryDto1)).thenReturn(categoryDto1);
 
+        // Convert Object into Json String (Object)
         ObjectMapper mapper = new ObjectMapper();
         String jsonString = mapper.writeValueAsString(categoryDto1);
         System.out.println("--------> JSON String - " + jsonString);
