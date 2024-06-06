@@ -56,7 +56,7 @@ public class PreparationServiceImpl implements PreparationService {
         Preparation questionToUpdate = this.prepRepo.findById(id).orElseThrow(() -> new ResourceNotFoundException("Question", "id", id));
         questionToUpdate.setQuestion(preparationDto.getQuestion());
         questionToUpdate.setAnswer(preparationDto.getAnswer());
-        System.out.println("IsCorrect - " + preparationDto.getCorrect());
+        //System.out.println("IsCorrect - " + preparationDto.getCorrect());
         questionToUpdate.setCorrect(preparationDto.getCorrect());
         this.prepRepo.save(questionToUpdate);
         return this.modelMapper.map(questionToUpdate, PreparationDto.class);
