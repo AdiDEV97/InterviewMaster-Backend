@@ -1,8 +1,11 @@
 package com.interviewmaster.Controller;
 
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.interviewmaster.Model.Category;
 import com.interviewmaster.Payload.CategoryDto;
 import com.interviewmaster.Service.Impl.CategoryServiceImpl;
+import com.mysql.cj.xdevapi.JsonParser;
 import org.hibernate.criterion.Example;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -27,6 +30,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.log;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.web.servlet.function.RequestPredicates.contentType;
 
 @WebMvcTest(CategoryController.class) // Load Application Context ---> For which class you want to write test cases
 public class CategoryControllerTest {
@@ -81,6 +85,20 @@ public class CategoryControllerTest {
         this.mockMvc.perform(get("/api/v1/category/id-1")).andExpect(jsonPath("$.categoryTitle").value("Java"));
         this.mockMvc.perform(get("/api/v1/category/id-1")).andExpect(jsonPath("$.categoryDescription").value("All Java Questions"));
         this.mockMvc.perform(get("/api/v1/category/id-1")).andExpect(content().contentType(MediaType.APPLICATION_JSON));
+    }
+
+    @Test
+    public void testAddNewCategory() throws Exception {
+        when(this.catServ.newCategory(categoryDto1)).thenReturn(categoryDto1);
+
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonString = mapper.writeValueAsString(categoryDto1);
+        System.out.println("--------> JSON String - " + jsonString);
+
+        this.mockMvc.perform(post("/api/v1/category/new-category").contentType(MediaType.APPLICATION_JSON).content(jsonString)).andDo(print()).andExpect(status().isOk());
+        this.mockMvc.perform(post("/api/v1/category/new-category").contentType(MediaType.APPLICATION_JSON).content(jsonString)).andExpect(jsonPath("$.categoryId").value(1));
+        this.mockMvc.perform(post("/api/v1/category/new-category").contentType(MediaType.APPLICATION_JSON).content(jsonString)).andExpect(jsonPath("$.categoryTitle").value("Java"));
+        this.mockMvc.perform(post("/api/v1/category/new-category").contentType(MediaType.APPLICATION_JSON).content(jsonString)).andExpect(jsonPath("$.categoryDescription").value("All Java Questions"));
     }
 
 
