@@ -20,6 +20,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -52,9 +53,9 @@ public class CategoryControllerTest {
     @BeforeEach
     public void setUp() {
         category1 = new Category(1, "Java", "All Java Questions", null);
-        category2 = new Category(1, "JPA", "All JPA Questions", null);
+        category2 = new Category(2, "JPA", "All JPA Questions", null);
         categoryDto1 = new CategoryDto(1, "Java", "All Java Questions");
-        categoryDto2 = new CategoryDto(1, "JPA", "All JPA Questions");
+        categoryDto2 = new CategoryDto(2, "JPA", "All JPA Questions");
 
         categoryList = new ArrayList<>(Arrays.asList(categoryDto1, categoryDto2));
     }
@@ -96,10 +97,30 @@ public class CategoryControllerTest {
         String jsonString = mapper.writeValueAsString(categoryDto1);
         System.out.println("--------> JSON String - " + jsonString);
 
+        // Here we add ".contentType(MediaType.APPLICATION_JSON).content(jsonString)" --> because AddNewCategory() method and UpdateCategory() method takes data from the user.
         this.mockMvc.perform(post("/api/v1/category/new-category").contentType(MediaType.APPLICATION_JSON).content(jsonString)).andDo(print()).andExpect(status().isOk());
         this.mockMvc.perform(post("/api/v1/category/new-category").contentType(MediaType.APPLICATION_JSON).content(jsonString)).andExpect(jsonPath("$.categoryId").value(1));
         this.mockMvc.perform(post("/api/v1/category/new-category").contentType(MediaType.APPLICATION_JSON).content(jsonString)).andExpect(jsonPath("$.categoryTitle").value("Java"));
         this.mockMvc.perform(post("/api/v1/category/new-category").contentType(MediaType.APPLICATION_JSON).content(jsonString)).andExpect(jsonPath("$.categoryDescription").value("All Java Questions"));
+    }
+
+
+    @Test
+    public void testUpdateCategory() throws Exception {
+        when(this.catServ.updateCategory(1, categoryDto2)).thenReturn(categoryDto2);
+
+        // Convert Object into Json String (Object)
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonString = mapper.writeValueAsString(categoryDto2);
+
+        System.out.println("----------> Category2 before update - " + category1);
+
+        // Here we add ".contentType(MediaType.APPLICATION_JSON).content(jsonString)" --> because AddNewCategory() method and UpdateCategory() method takes data from the user.
+        this.mockMvc.perform(put("/api/v1/category/update/id-1").contentType(MediaType.APPLICATION_JSON).content(jsonString)).andDo(print()).andExpect(status().isOk());
+
+        this.mockMvc.perform(put("/api/v1/category/update/id-1").contentType(MediaType.APPLICATION_JSON).content(jsonString)).andDo(print()).andExpect(jsonPath("$.categoryId").value(2));
+        this.mockMvc.perform(put("/api/v1/category/update/id-1").contentType(MediaType.APPLICATION_JSON).content(jsonString)).andExpect(jsonPath("$.categoryTitle").value("JPA"));
+        this.mockMvc.perform(put("/api/v1/category/update/id-1").contentType(MediaType.APPLICATION_JSON).content(jsonString)).andExpect(jsonPath("$.categoryDescription").value("All JPA Questions"));
     }
 
 
