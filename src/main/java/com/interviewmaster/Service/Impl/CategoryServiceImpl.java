@@ -16,7 +16,6 @@ import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
-@NoArgsConstructor
 public class CategoryServiceImpl implements CategoryService {
 
     @Autowired
