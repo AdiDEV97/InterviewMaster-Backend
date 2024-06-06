@@ -26,6 +26,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.regex.MatchResult;
 
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*; // get() method
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.log;
@@ -121,6 +122,16 @@ public class CategoryControllerTest {
         this.mockMvc.perform(put("/api/v1/category/update/id-1").contentType(MediaType.APPLICATION_JSON).content(jsonString)).andDo(print()).andExpect(jsonPath("$.categoryId").value(2));
         this.mockMvc.perform(put("/api/v1/category/update/id-1").contentType(MediaType.APPLICATION_JSON).content(jsonString)).andExpect(jsonPath("$.categoryTitle").value("JPA"));
         this.mockMvc.perform(put("/api/v1/category/update/id-1").contentType(MediaType.APPLICATION_JSON).content(jsonString)).andExpect(jsonPath("$.categoryDescription").value("All JPA Questions"));
+    }
+
+
+    @Test
+    public void testDeleteCategory() throws Exception {
+        doNothing().when(this.catServ).deleteCategory(1);
+        this.mockMvc.perform(delete("/api/v1/category/delete/id-1")).andDo(print()).andExpect(status().isOk());
+        this.mockMvc.perform(delete("/api/v1/category/delete/id-1")).andDo(print()).andExpect(content().contentType(MediaType.APPLICATION_JSON));
+        this.mockMvc.perform(delete("/api/v1/category/delete/id-1")).andDo(print()).andExpect(jsonPath("$.message").value("The category with id - 1 is deleted successfully"));
+        this.mockMvc.perform(delete("/api/v1/category/delete/id-1")).andDo(print()).andExpect(jsonPath("$.status").value(true));
     }
 
 
