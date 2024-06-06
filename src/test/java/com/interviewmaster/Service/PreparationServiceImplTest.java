@@ -27,8 +27,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.offset;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 
 //@ExtendWith(MockitoExtension.class)  // To Enable All Mockito Annotations
@@ -149,5 +148,13 @@ public class PreparationServiceImplTest {
 
         assertThat(this.preparationServ.updateQuestion(1, preparationDto2).getQuestion()).isEqualTo(preparationDto2.getQuestion());
         assertThat(this.preparationServ.updateQuestion(1, preparationDto2).getId()).isEqualTo(preparationDto2.getId());
+    }
+
+    @Test
+    public void testDeleteQuestion() {
+        when(this.prepRepo.findById(preparation1.getId())).thenReturn(Optional.of(preparation1));
+
+        doNothing().when(this.prepRepo).delete(any(Preparation.class));
+        this.preparationServ.deleteQuestion(1);
     }
 }
