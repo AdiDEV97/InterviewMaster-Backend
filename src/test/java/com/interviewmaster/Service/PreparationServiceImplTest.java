@@ -168,4 +168,16 @@ public class PreparationServiceImplTest {
         assertThat(this.preparationServ.getAllQuestionsByCategory(1).get(0).getAnswer()).isEqualTo(allQuestions.get(0).getAnswer());
         assertThat(this.preparationServ.getAllQuestionsByCategory(1).size()).isEqualTo(allQuestions.size());
     }
+
+    @Test
+    public void testGetRandomQuestionById() {
+        when(this.prepRepo.count()).thenReturn(1L);
+        when(this.prepRepo.findById(1)).thenReturn(Optional.of(preparation1));
+        when(this.modelMapper.map(preparation1, PreparationDto.class)).thenReturn(preparationDto1);
+
+        assertThat(this.preparationServ.getRandomQuestionById().getId()).isEqualTo(preparation1.getId());
+        assertThat(this.preparationServ.getRandomQuestionById().getQuestion()).isEqualTo(preparation1.getQuestion());
+        assertThat(this.preparationServ.getRandomQuestionById().getCategory()).isEqualTo(preparation1.getCategory());
+        assertThat(this.preparationServ.getRandomQuestionById().getAnswer()).isEqualTo(preparation1.getAnswer());
+    }
 }
