@@ -3,6 +3,7 @@ package com.interviewmaster.Service;
 import com.interviewmaster.Dao.CategoryRepository;
 import com.interviewmaster.Dao.PreparationRepo;
 import com.interviewmaster.Model.Category;
+import com.interviewmaster.Model.InterviewRequisite;
 import com.interviewmaster.Model.Preparation;
 import com.interviewmaster.Payload.CategoryDto;
 import com.interviewmaster.Payload.PreparationDto;
@@ -48,15 +49,17 @@ public class PreparationServiceImplTest {
     PreparationServiceImpl preparationServ;
 
     private List<Preparation> allQuestions;
-
+    private Category category;
     private Preparation preparation1;
     private Preparation preparation2;
+
+    private InterviewRequisite interviewRequisite;
 
     private PreparationDto preparationDto1;
 
     private PreparationDto preparationDto2;
 
-    private Category category;
+
 
     @BeforeEach
     public void setUp() {
@@ -190,5 +193,9 @@ public class PreparationServiceImplTest {
         assertThat(this.preparationServ.searchPreparationByQuestion("JPA").get(0).getQuestion()).isEqualTo(preparation1.getQuestion());
         assertThat(this.preparationServ.searchPreparationByQuestion("JPA").get(0).getAnswer()).isEqualTo(preparation1.getAnswer());
         assertThat(this.preparationServ.searchPreparationByQuestion("JPA").get(0).getCategory()).isEqualTo(preparation1.getCategory());
+    }
+
+    public void testGetQuestionsByMultipleCategories() {
+        interviewRequisite = new InterviewRequisite();
     }
 }
