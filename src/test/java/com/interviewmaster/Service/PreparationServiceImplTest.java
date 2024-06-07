@@ -6,6 +6,7 @@ import com.interviewmaster.Model.Category;
 import com.interviewmaster.Model.InterviewRequisite;
 import com.interviewmaster.Model.Preparation;
 import com.interviewmaster.Payload.CategoryDto;
+import com.interviewmaster.Payload.InterviewRequisiteDto;
 import com.interviewmaster.Payload.PreparationDto;
 import com.interviewmaster.Service.Impl.PreparationServiceImpl;
 import org.junit.jupiter.api.AfterEach;
@@ -53,11 +54,11 @@ public class PreparationServiceImplTest {
     private Preparation preparation1;
     private Preparation preparation2;
 
-    private InterviewRequisite interviewRequisite;
-
     private PreparationDto preparationDto1;
 
     private PreparationDto preparationDto2;
+
+    private InterviewRequisiteDto interviewRequisiteDto;
 
 
 
@@ -195,7 +196,23 @@ public class PreparationServiceImplTest {
         assertThat(this.preparationServ.searchPreparationByQuestion("JPA").get(0).getCategory()).isEqualTo(preparation1.getCategory());
     }
 
+    @Test
     public void testGetQuestionsByMultipleCategories() {
-        interviewRequisite = new InterviewRequisite();
+        List<Category> categoryList = new ArrayList<>(Arrays.asList(category));
+        interviewRequisiteDto = new InterviewRequisiteDto("InterviewerName", "CompanyName", new ArrayList<>(Arrays.asList(category.getCategoryId())), 2, 10, new ArrayList<>(Arrays.asList(preparationDto1, preparationDto2)));
+
+        when(this.catRepo.findById(1)).thenReturn(Optional.of(category));
+        when(this.prepRepo.findByCategories(new ArrayList<>(Arrays.asList(category)))).thenReturn(new ArrayList<>(allQuestions));
+        when(this.modelMapper.map(preparation1, PreparationDto.class)).thenReturn(preparationDto1);
+        when(this.modelMapper.map(preparation2, PreparationDto.class)).thenReturn(preparationDto2);
+
+        List<PreparationDto> prepList = this.preparationServ.getQuestionsByMultipleCategories(interviewRequisiteDto);
+        System.out.println("prep List -> " + prepList);
+        System.out.println("Size - " + prepList.size());
+
+        assertThat(this.preparationServ.getQuestionsByMultipleCategories(interviewRequisiteDto).isEmpty()).isFalse();
+        assertThat(this.preparationServ.getQuestionsByMultipleCategories(interviewRequisiteDto).size()).isEqualTo(2);
+        assertThat(this.preparationServ.getQuestionsByMultipleCategories(interviewRequisiteDto)).containsExactlyInAnyOrder(preparationDto1, preparationDto2);
     }
+
 }
