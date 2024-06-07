@@ -2,7 +2,9 @@ package com.interviewmaster.Payload;
 
 import com.interviewmaster.Model.Category;
 import com.interviewmaster.Model.InterviewRequisite;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
 import javax.validation.constraints.NotEmpty;
@@ -11,6 +13,8 @@ import javax.validation.constraints.Size;
 import java.util.List;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class InterviewRequisiteDto {
 
     //private int id;
