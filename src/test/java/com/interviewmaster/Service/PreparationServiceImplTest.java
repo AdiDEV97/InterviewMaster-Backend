@@ -159,7 +159,7 @@ public class PreparationServiceImplTest {
     }
 
     @Test
-    public void getAllQuestionsByCategory() {
+    public void testGetAllQuestionsByCategory() {
         when(this.catRepo.findById(1)).thenReturn(Optional.of(category));
         when(this.prepRepo.findByCategory(category)).thenReturn(allQuestions);
         when(this.modelMapper.map(preparation1, PreparationDto.class)).thenReturn(preparationDto1);
