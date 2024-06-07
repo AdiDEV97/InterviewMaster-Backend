@@ -180,4 +180,15 @@ public class PreparationServiceImplTest {
         assertThat(this.preparationServ.getRandomQuestionById().getCategory()).isEqualTo(preparation1.getCategory());
         assertThat(this.preparationServ.getRandomQuestionById().getAnswer()).isEqualTo(preparation1.getAnswer());
     }
+
+    @Test
+    public void testSearchPreparationByQuestion() {
+        when(this.prepRepo.searchByQuestion("%JPA%")).thenReturn(new ArrayList<>(Arrays.asList(preparation1)));
+        when(this.modelMapper.map(preparation1, PreparationDto.class)).thenReturn(preparationDto1);
+
+        assertThat(this.preparationServ.searchPreparationByQuestion("JPA").get(0).getId()).isEqualTo(preparation1.getId());
+        assertThat(this.preparationServ.searchPreparationByQuestion("JPA").get(0).getQuestion()).isEqualTo(preparation1.getQuestion());
+        assertThat(this.preparationServ.searchPreparationByQuestion("JPA").get(0).getAnswer()).isEqualTo(preparation1.getAnswer());
+        assertThat(this.preparationServ.searchPreparationByQuestion("JPA").get(0).getCategory()).isEqualTo(preparation1.getCategory());
+    }
 }
