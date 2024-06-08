@@ -215,4 +215,17 @@ public class PreparationServiceImplTest {
         assertThat(this.preparationServ.getQuestionsByMultipleCategories(interviewRequisiteDto)).containsExactlyInAnyOrder(preparationDto1, preparationDto2);
     }
 
+    @Test
+    public void testUpdateStatus() {
+
+        when(this.prepRepo.findById(1)).thenReturn(Optional.of(preparation1));
+        when(this.prepRepo.save(preparation1)).thenReturn(preparation1);
+        when(this.modelMapper.map(preparation1, PreparationDto.class)).thenReturn(preparationDto1);
+
+        preparationDto1.setCorrect("Correct");
+        assertThat(preparationServ.updateStatus(1, "Correct").getCorrect()).isEqualTo("Correct");
+        assertThat(preparationServ.updateStatus(1, "Correct").getId()).isEqualTo(preparationDto1.getId());
+        assertThat(preparationServ.updateStatus(1, "Correct")).isNotNull();
+    }
+
 }
