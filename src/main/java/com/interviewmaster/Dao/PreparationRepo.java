@@ -10,6 +10,7 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 import java.util.Set;
 
+// Preparation Repository Interface
 public interface PreparationRepo extends JpaRepository<Preparation, Integer> {
     List<Preparation> findByCategory(Category category);
 
